@@ -22,8 +22,9 @@ class UserService{
                 
                 const user = await UserModel.create(data)
 
-                const token = jwt.sign({Password:user.Password,Email:user.Email},jwt_secret,{expiresIn:'1d'})
+                const token = jwt.sign({Password:user.Password,Email:user.Email,UserName:user.UserName},jwt_secret,{expiresIn:'1d'})
                 const {message,valid} = respuesta
+                console.log("Se a Registrado un Usuario")
                 return {message,valid,token}
             }
             return respuesta
@@ -36,11 +37,12 @@ class UserService{
     }
     async loginUser(data){
         const {valid} = await this.verificacion.validEmailDB(data)
+        // el valid = false es igual a usuario en base de datos
         if(!valid){
             const respuesta = await this.verificacion.validPasswordDB(data)
             return respuesta
         }
-        return {acces:false,message:'credenciales incorrectas'}
+        return {access:false,message:'credenciales incorrectas'}
 
     }
 }

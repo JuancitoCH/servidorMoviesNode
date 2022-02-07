@@ -5,7 +5,7 @@ const moviesRoutes = require('./routes/moviesRoutesManager')
 const enVar = require('./config/envVars')
 const userRoute = require('./routes/userRoute')
 const cors = require('cors')
-
+const cookies = require('cookie-parser')
 //definition of app for express
 coneccionDb()
 const app = express()
@@ -14,6 +14,7 @@ app.use(express.json())
 app.use(cors({
     origin:'*'
 }))
+app.use(cookies())
 
 //routes
 moviesRoutes(app)

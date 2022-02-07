@@ -14,14 +14,14 @@ class VerificacionUser {
     }
     
     async validPasswordDB(data){
-        const {Password,Email} = data
+        const {Password,Email,UserName} = data
         const usuario = await UserModel.findOne({Email})
+
         if (usuario.Password === Password) {
-            const token = jwt.sign({Password,usuario},jwt_secret,{expiresIn:'1d'})
-            // console.log({acses:true,token,message:'acceso concedido'})
-            return {acses:true,token,message:'acceso concedido'}
+            const token = jwt.sign({Password,Email,UserName},jwt_secret,{expiresIn:'1d'})
+            return {access:true,token,message:'acceso concedido'}
         }
-        return {acses:false,message:'password incorrecta credenciales incorrectas'}
+        return {access:false,message:'password incorrecta credenciales incorrectas'}
     }
     validDataUser(data){
         const {UserName,Email,Password,UserPhoto} = data
