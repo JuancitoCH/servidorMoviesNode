@@ -34,5 +34,18 @@ const userRoute=(app)=>{
             sameSite:"none"
         }).json(respuesta)
     })
+
+    router.post('/delete',auth,async (req,res)=>{
+        //necesita de autorizacion admin
+        //  id del usuario
+        const dataUserToDelete = req.body
+        const respuesta = userService.deleteUser(dataUserToDelete)
+        //cambiar status code
+        return res.status(200).json(respuesta)
+
+    })
+    router.post('/update',auth,async (req,res)=>{
+        
+    })
 }
 module.exports = userRoute

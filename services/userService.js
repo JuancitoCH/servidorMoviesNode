@@ -11,6 +11,19 @@ class UserService{
 
         return await UserModel.find()
     }
+    async deleteUser(data){
+        const {id} = data
+        try{
+            const deleted = await UserModel.findByIdAndDelete(id)
+            return deleted
+        }
+        catch(e){
+            return {message:"Usuario no encontrado",e}
+        }
+
+    }
+
+
     async registerUser(data){
         const validData = this.verificacion.validDataUser(data)
         if(validData){
