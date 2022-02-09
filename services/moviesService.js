@@ -9,9 +9,9 @@ class Movie {
     async getAllMovies(){
         return await MoviesModel.find()
     }
+
     async createMovie(movieData){
         // no se donde poner la funcion de verificacion si aqui directamente o en la clase misma
-
         const {message,reject} = await this.verificacionM.verificarDatosBase(movieData)
         if(!reject){
             const validacion = this.verificacionM.verificacionDatosReq(movieData)
@@ -22,7 +22,16 @@ class Movie {
             else return {message:"Los Datos Proporcionados no son Suficiente"}
         }
         return {message}
-     
+    }
+    async deleteMovie(data){
+        try{
+            const{id} = data
+            await MoviesModel.findByIdAndDelete(id)
+            return {message:"Eliminada"}
+        }
+        catch(e){
+            return {message:"Pelicula no encontrada"}
+        }
     }
 }
 module.exports = Movie

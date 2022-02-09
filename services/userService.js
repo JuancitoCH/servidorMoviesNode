@@ -1,7 +1,5 @@
 const UserModel = require("../models/userModel");
 const VerificacionUser = require("./vericacionUser");
-const jwt = require('jsonwebtoken')
-const {jwt_secret} = require("../config/envVars")
 
 class UserService{
     constructor(){
@@ -20,32 +18,24 @@ class UserService{
         catch(e){
             return {message:"Usuario no encontrado",e}
         }
-
     }
-
-
+    
     async registerUser(data){
         const validData = this.verificacion.validDataUser(data)
         if(validData){
-
             const respuesta = await this.verificacion.validEmailDB(data)
             const{valid} = respuesta
-    
             if(valid){
                 
                 const user = await UserModel.create(data)
-
-                const token = jwt.sign({Password:user.Password,Email:user.Email,UserName:user.UserName},jwt_secret,{expiresIn:'1d'})
-                const {message,valid} = respuesta
                 console.log("Se a Registrado un Usuario")
+                const token = this.verificacion.signTokenOneDay(user)
+                const {message,valid} = respuesta
                 return {message,valid,token}
             }
             return respuesta
         }
-        /*
-        UserName:String,Email:{type:String,unique:true},Password:String,UserPhoto:String(url),RegisterDate:{type:Date,default:Date.now}
-        */
-        return {valid:false,message:'Los datos Proporcionados no son suficientes {UserName:String,Email:{type:String,unique:true},Password:String,UserPhoto:String(url),RegisterDate:{type:Date,default:Date.now}}'}
+        return {valid:false,message:'Los datos Proporcionados no son suficientes {UserName:String,Email:String,Password:String,UserPhoto:String(url)}'}
         
     }
     async loginUser(data){

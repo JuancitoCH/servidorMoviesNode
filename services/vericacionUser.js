@@ -2,6 +2,7 @@ const UserModel = require("../models/userModel");
 const jwt = require('jsonwebtoken')
 const {jwt_secret} = require("../config/envVars")
 
+
 class VerificacionUser {
     
     async validEmailDB(data){
@@ -14,29 +15,30 @@ class VerificacionUser {
     }
     
     async validPasswordDB(data){
-        const {Password,Email,UserName} = data
+        const {Password,Email} = data
         const usuario = await UserModel.findOne({Email})
 
         if (usuario.Password === Password) {
-            const token = jwt.sign({Password,Email,UserName},jwt_secret,{expiresIn:'1d'})
+            const token = this.signTokenOneDay(usuario)
             return {access:true,token,message:'acceso concedido'}
         }
         return {access:false,message:'password incorrecta credenciales incorrectas'}
     }
     validDataUser(data){
         const {UserName,Email,Password,UserPhoto} = data
-        if(UserName&&Email&&Password&&UserPhoto){
-            return true
-        }
+        if(UserName&&Email&&Password&&UserPhoto)return true
         return false
-        /*
-        UserName:String,
-    Email:{type:String,unique:true},
-    Password:String,
-    UserPhoto:String,
-    RegisterDate:{type:Date,default:Date.now}
-        */
     }
 
+    signTokenOneDay(user){
+        const token = jwt.sign({Password:user.Password,Email:user.Email,UserName:user.UserName,Rol:user.Rol},jwt_secret,{expiresIn:'1d'})
+        return token
+    }
+    async validLogin({Email,Password}){
+        const usuario = await UserModel.findOne({Email})
+        if(!Email) return false
+        if(usuario.Password !== Password) return false
+        return {access:true}
+    }
 }
 module.exports = VerificacionUser
