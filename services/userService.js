@@ -26,12 +26,8 @@ class UserService{
             const respuesta = await this.verificacion.validEmailDB(data)
             const{valid} = respuesta
             if(valid){
-                
-                const user = await UserModel.create(data)
-                console.log("Se a Registrado un Usuario")
-                const token = this.verificacion.signTokenOneDay(user)
-                const {message,valid} = respuesta
-                return {message,valid,token}
+                const res = await this.verificacion.registrar(data,respuesta)
+                return res
             }
             return respuesta
         }

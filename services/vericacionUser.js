@@ -1,7 +1,7 @@
 const UserModel = require("../models/userModel");
 const jwt = require('jsonwebtoken')
 const {jwt_secret} = require("../config/envVars")
-
+const bcrypt = require('bcrypt')
 
 class VerificacionUser {
     
@@ -17,8 +17,9 @@ class VerificacionUser {
     async validPasswordDB(data){
         const {Password,Email} = data
         const usuario = await UserModel.findOne({Email})
-
-        if (usuario.Password === Password) {
+        //compare
+        if (await bcrypt.compare(Password,usuario.Password)) {
+            usuario.Password = Password
             const token = this.signTokenOneDay(usuario)
             return {access:true,token,message:'acceso concedido'}
         }
@@ -37,8 +38,23 @@ class VerificacionUser {
     async validLogin({Email,Password}){
         const usuario = await UserModel.findOne({Email})
         if(!Email) return false
-        if(usuario.Password !== Password) return false
-        return {access:true}
+        const res = await bcrypt.compare(Password,usuario.Password)
+        return res
+    }
+    async hashPassword(password){
+        const salt = await bcrypt.genSalt(10)
+        return await bcrypt.hash(password,salt)
+    }
+    async registrar(data,respuesta){
+        const contraseña = data.Password
+        data.Password = await this.hashPassword(data.Password)
+        const user = await UserModel.create(data)
+        console.log("Se a Registrado un Usuario")
+        user.Password = contraseña
+        const token = this.signTokenOneDay(user)
+        const {message,valid} = respuesta
+        return {message,valid,token}
+
     }
 }
 module.exports = VerificacionUser

@@ -1,7 +1,8 @@
 const express = require('express')
 const UserService = require('../services/UserService')
-const {auth, authCookies,authCookiesRoleAdmin} = require('../middleware/loginCredentials')
-const cookie = require('cookie-parser')
+const {authCookiesRoleAdmin} = require('../middleware/loginCredentials')
+// const cookie = require('cookie-parser')
+
 const userRoute=(app)=>{
     const router = express.Router()
     const userService = new UserService()
@@ -43,7 +44,7 @@ const userRoute=(app)=>{
         return res.status(200).json(respuesta)
 
     })
-    router.post('/update',auth,async (req,res)=>{
+    router.post('/update',authCookiesRoleAdmin,async (req,res)=>{
         
     })
 }

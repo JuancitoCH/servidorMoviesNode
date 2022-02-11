@@ -1,10 +1,11 @@
 const MoviesModel = require('../models/moviesModel')
 const VerificacionMovie = require('./verificacionMovies')
-
+const ComentariosService = require('./ComentariosService')
 class Movie {
 
     constructor(){
         this.verificacionM = new VerificacionMovie()
+        this.ComentarioS = new ComentariosService()
     }
     async getAllMovies(){
         return await MoviesModel.find()
@@ -16,7 +17,8 @@ class Movie {
         if(!reject){
             const validacion = this.verificacionM.verificacionDatosReq(movieData)
             if(validacion){
-                await MoviesModel.create(movieData)
+                const movieCreated = await MoviesModel.create(movieData)
+                await this.ComentarioS.AgregarComentario(movieCreated.id)
                 return{message:'Succesfully created'}
             }
             else return {message:"Los Datos Proporcionados no son Suficiente"}
