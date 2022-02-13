@@ -48,6 +48,7 @@ class VerificacionUser {
     async registrar(data,respuesta){
         const contraseña = data.Password
         data.Password = await this.hashPassword(data.Password)
+        data.Rol = undefined
         const user = await UserModel.create(data)
         console.log("Se a Registrado un Usuario")
         user.Password = contraseña

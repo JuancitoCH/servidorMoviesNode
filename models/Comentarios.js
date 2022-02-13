@@ -4,7 +4,7 @@ const {Schema} = mongoose
 const ComentarioShecma = new Schema({
     MovieId:{type:String,unique:true},
     Comentarios:[{type:{
-        IdUser:String,
+        Email:String,
         Comentario:String,
         Raiting:{type:Number}
     }, default:[]}]
