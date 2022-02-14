@@ -6,7 +6,8 @@ const UserSchema = new Schema({
     Email:{type:String,unique:true},
     Password:String,
     UserPhoto:String,
-    RegisterDate:{type:Date,default:Date.now}
+    RegisterDate:{type:Date,default:Date.now},
+    Rol:{type:Number,default:2}
 })
 
 const UserModel = mongoose.model('users',UserSchema)

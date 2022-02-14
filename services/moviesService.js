@@ -1,28 +1,43 @@
 const MoviesModel = require('../models/moviesModel')
 const VerificacionMovie = require('./verificacionMovies')
-
+const ComentariosService = require('./ComentariosService')
 class Movie {
 
     constructor(){
         this.verificacionM = new VerificacionMovie()
+        this.ComentarioS = new ComentariosService()
     }
     async getAllMovies(){
         return await MoviesModel.find()
     }
+
     async createMovie(movieData){
         // no se donde poner la funcion de verificacion si aqui directamente o en la clase misma
-
         const {message,reject} = await this.verificacionM.verificarDatosBase(movieData)
         if(!reject){
             const validacion = this.verificacionM.verificacionDatosReq(movieData)
             if(validacion){
-                await MoviesModel.create(movieData)
+                const movieCreated = await MoviesModel.create(movieData)
+                await this.ComentarioS.AgregarComentario(movieCreated.id)
                 return{message:'Succesfully created'}
             }
-            else return {message:"Los Datos Proporcionados no son Suficiente"}
+            else return {message:"Los Datos Proporcionados no son Suficiente Title,Realease,Sinopsis,Poster:url,Banner:url,Raiting,Genere,Cast,Trailer:urlYoutube"}
         }
         return {message}
-     
+    }
+    async deleteMovie(data){
+        try{
+            const{id} = data
+            await MoviesModel.findByIdAndDelete(id)
+            await this.ComentarioS.deleteSeccionComentario(id)
+            return {message:"Eliminada"}
+        }
+        catch(e){
+            return {message:"Pelicula no encontrada"}
+        }
+    }
+    async getOneId(MovieId){
+        return await MoviesModel.findById(MovieId)
     }
 }
 module.exports = Movie
