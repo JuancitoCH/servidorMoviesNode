@@ -10,7 +10,7 @@ const MoviesSchema = new Schema({
     Genere:Array,
     Cast:Array,
     Raiting:Number,
-    Trailer:String,
+    Trailer:{type:String,default:"https://www.youtube.com/watch?v=-qWuhecwVmc"},
 })
 
 const MoviesModel = mongoose.model('movies',MoviesSchema)
