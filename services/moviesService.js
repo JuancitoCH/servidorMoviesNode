@@ -37,7 +37,12 @@ class Movie {
         }
     }
     async getOneId(MovieId){
-        return await MoviesModel.findById(MovieId)
+        try{
+            return await MoviesModel.findById(MovieId)
+        }
+        catch(e){
+            return {message:"NotFound"}
+        }
     }
 }
 module.exports = Movie

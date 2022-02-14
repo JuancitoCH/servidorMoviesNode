@@ -20,9 +20,9 @@ const moviesRoutes=(app)=>{
     })
     router.get('/:id',async(req,res)=>{
         const {id:MovieId} = req.params
-        const movieOne = await movies.getOneId(MovieId)
-        if(!movieOne) return res.status(200).json({message:"movie not found"})
-        return res.status(200).json(movieOne)
+        const Movie = await movies.getOneId(MovieId)
+        const Comentarios = await comentarios.getComentario(MovieId)
+        return res.status(200).json({Movie,Comentarios})
         
     })
     router.post('/create',authCookiesRoleEditor,async(req,res)=>{

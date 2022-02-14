@@ -12,6 +12,16 @@ class ComentariosService{
        console.log("creadoComentario")
 
     }
+    async getComentario(MovieId){
+        try{
+            const {Comentarios} = await ComentariosModel.findOne({MovieId})
+            return Comentarios
+        }
+        catch{
+            
+            return "sinComentarios"
+        }
+    }
     async Comentar(data,cookie){
         try{
             const {condicion,Email} = await this.verificacionC.verifyComentar(data,cookie)
