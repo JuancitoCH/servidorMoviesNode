@@ -9,6 +9,10 @@ const moviesRoutes=(app)=>{
     const comentarios = new Comentar()
     //uzo de la ruta por parte de app
     app.use('/movies',router)
+    // router.get('/',(req,res)=>{
+            
+    //         return res.status(200).json({moviesList:"aaaaa"})
+    //     })
 
     router.get('/',async(req,res)=>{
         const moviesList = await movies.getAllMovies()
@@ -17,6 +21,7 @@ const moviesRoutes=(app)=>{
     router.get('/:id',async(req,res)=>{
         const {id:MovieId} = req.params
         const movieOne = await movies.getOneId(MovieId)
+        if(!movieOne) return res.status(200).json({message:"movie not found"})
         return res.status(200).json(movieOne)
         
     })
