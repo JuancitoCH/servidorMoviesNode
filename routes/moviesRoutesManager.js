@@ -14,6 +14,12 @@ const moviesRoutes=(app)=>{
         const moviesList = await movies.getAllMovies()
         return res.status(200).json(moviesList)
     })
+    router.get('/:id',async(req,res)=>{
+        const {id:MovieId} = req.params
+        const movieOne = await movies.getOneId(MovieId)
+        return res.status(200).json(movieOne)
+        
+    })
     router.post('/create',authCookiesRoleEditor,async(req,res)=>{
         const data = req.body
         const mesage = await movies.createMovie(data)        

@@ -36,6 +36,9 @@ class Movie {
             return {message:"Pelicula no encontrada"}
         }
     }
+    async getOneId(MovieId){
+        return await MoviesModel.findById(MovieId)
+    }
 }
 module.exports = Movie
 
