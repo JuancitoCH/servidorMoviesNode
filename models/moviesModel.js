@@ -9,7 +9,8 @@ const MoviesSchema = new Schema({
     Banner:String,
     Genere:Array,
     Cast:Array,
-    Raiting:Number
+    Raiting:Number,
+    Trailer:String,
 })
 
 const MoviesModel = mongoose.model('movies',MoviesSchema)

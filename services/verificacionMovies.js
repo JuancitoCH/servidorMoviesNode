@@ -11,8 +11,8 @@ class VerificacionMovie {
     }
 
     verificacionDatosReq(data){
-        const {Title,Realease,Sinopsis,Poster,Banner,Raiting,Genere,Cast} = data
-        if(Title&&Realease&&Sinopsis&&Poster&&Banner&&Raiting&&Genere&&Cast) return true
+        const {Title,Realease,Sinopsis,Poster,Banner,Raiting,Genere,Cast,Trailer} = data
+        if(Title&&Realease&&Sinopsis&&Poster&&Banner&&Raiting&&Genere&&Cast&&Trailer) return true
         return false
     }
     

@@ -10,23 +10,23 @@ const moviesRoutes=(app)=>{
     //uzo de la ruta por parte de app
     app.use('/movies',router)
 
-    router.get('/',authCookiesRoleUser,async(req,res)=>{
+    router.get('/',async(req,res)=>{
         const moviesList = await movies.getAllMovies()
         return res.status(200).json(moviesList)
     })
-    router.post('/create',authCookiesRoleUser,async(req,res)=>{
-        
+    router.post('/create',authCookiesRoleEditor,async(req,res)=>{
         const data = req.body
-        const mesage = await movies.createMovie(data)
-        console.log(mesage)
-        
+        const mesage = await movies.createMovie(data)        
         return res.status(201).json(mesage)
     })
     router.post('/:id/comentar',authCookiesRoleUser,async(req,res)=>{
-        const {id:IdMovie} = req.params
+        const {id:MovieId} = req.params
         const {Comentario}=req.body
-        const data = {Comentario,IdMovie}
-        const mesage = comentarios.Comentar(data,req.cookies)
+        
+        const data = {Comentario,MovieId}
+        console.log(data)
+        const mesage = await comentarios.Comentar(data,req.cookies)
+        if(!mesage) return res.status(400).json({message:"La Entrada no existe"})
        
         return res.status(201).json(mesage)
     })

@@ -21,7 +21,12 @@ class VerificacionUser {
         if (await bcrypt.compare(Password,usuario.Password)) {
             usuario.Password = Password
             const token = this.signTokenOneDay(usuario)
-            return {access:true,token,message:'acceso concedido'}
+            const User ={
+                UserName:usuario.UserName,
+                Email:usuario.Email,
+                UserPhoto:usuario.UserPhoto
+            }
+            return {access:true,token,message:'acceso concedido',User}
         }
         return {access:false,message:'password incorrecta credenciales incorrectas'}
     }

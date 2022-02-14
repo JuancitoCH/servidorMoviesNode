@@ -45,7 +45,10 @@ const userRoute=(app)=>{
 
     })
     router.post('/update',authCookiesRoleAdmin,async (req,res)=>{
-        
+        const data = req.body
+        const respuesta = await userService.updateUserRole(data)
+        return res.status(200).json(respuesta)
+
     })
 }
 module.exports = userRoute

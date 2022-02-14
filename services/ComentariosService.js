@@ -13,18 +13,25 @@ class ComentariosService{
 
     }
     async Comentar(data,cookie){
-        // ta mal hay que pasar bien los datos a la funcion de verificacion
         try{
-
             const {condicion,Email} = await this.verificacionC.verifyComentar(data,cookie)
-            if(!condicion) return {message:"datos mal"}
-            const {MovieId,Comentario,Raiting} = data
-            return await ComentariosModel.findOneAndUpdate({MovieId},{Comentarios:[...Comentarios,{Email,Comentario,Raiting}]},{new:true})
+            if(!condicion) return {message:"Los Datos Proporcionados son insuficientes" , Datos:"{Comentario:'string',Raiting:'number' }"}
+
+            const {MovieId,Comentario:{Comentario},Raiting} = data
+            const {Comentarios} = await ComentariosModel.findOne({MovieId})
+
+            if(Comentarios) return await ComentariosModel.findOneAndUpdate({MovieId},{Comentarios:[...Comentarios,{Email,Comentario,Raiting}]},{new:true})
+
+            return  await ComentariosModel.findOneAndUpdate({MovieId},{ Comentarios:[{Email,Comentario,Raiting}] },{new:true})
         }
         catch(e){
             console.log("error")
             console.log(e)
         }
+    }
+    async deleteSeccionComentario(MovieId){
+        const comentarioDel = await ComentariosModel.findOneAndDelete({MovieId})
+        console.log(comentarioDel)
     }
 }
 module.exports = ComentariosService

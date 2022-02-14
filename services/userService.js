@@ -44,5 +44,12 @@ class UserService{
         return {access:false,message:'credenciales incorrectas'}
 
     }
+    async updateUserRole(data){
+        const {Rol,id} = data
+        if(!Rol === Number) return {message:"el Rol debe ser un numero"}
+        await UserModel.findByIdAndUpdate(id,{Rol})
+        return {message:"Usuario Actualizado Correctamente"}
+
+    }
 }
 module.exports = UserService

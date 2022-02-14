@@ -21,7 +21,7 @@ class Movie {
                 await this.ComentarioS.AgregarComentario(movieCreated.id)
                 return{message:'Succesfully created'}
             }
-            else return {message:"Los Datos Proporcionados no son Suficiente"}
+            else return {message:"Los Datos Proporcionados no son Suficiente Title,Realease,Sinopsis,Poster:url,Banner:url,Raiting,Genere,Cast,Trailer:urlYoutube"}
         }
         return {message}
     }
@@ -29,6 +29,7 @@ class Movie {
         try{
             const{id} = data
             await MoviesModel.findByIdAndDelete(id)
+            await this.ComentarioS.deleteSeccionComentario(id)
             return {message:"Eliminada"}
         }
         catch(e){
