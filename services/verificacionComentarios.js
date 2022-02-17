@@ -7,9 +7,8 @@ class VerificarComentarios{
    
     async verifyComentar(data,cookie){
 
-        const {MovieId,Comentario} = data
-        if(!(MovieId && Comentario)) return {condicion :false}
-        if(!(Comentario.Comentario && Comentario.Raiting)) return {condicion:false}
+        const {MovieId,Comentario,Raiting} = data
+        if(!(MovieId && Comentario && Raiting)) return {condicion :false}
 
         const datos = jwt.verify(cookie.token,jwt_secret)
         const usuario = await UserModel.findOne({Email:datos.Email})

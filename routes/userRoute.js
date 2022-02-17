@@ -23,8 +23,8 @@ const userRoute=(app)=>{
         const usuario = await userService.registerUser(data)
         return res.status(200).cookie("token",usuario.token,{
             httpOnly:true,
-            // secure:true,
-            // sameSite:"none"
+            secure:true,
+            sameSite:"none"
         }).json(usuario)
     })
     router.post('/login',async(req,res)=>{
@@ -32,8 +32,8 @@ const userRoute=(app)=>{
         const respuesta = await userService.loginUser(data)
         return res.status(200).cookie("token",respuesta.token,{
             httpOnly:true,
-            // secure:true,
-            // sameSite:"none"
+            secure:true,
+            sameSite:"none"
         }).json(respuesta)
     })
 

@@ -33,9 +33,8 @@ const moviesRoutes=(app)=>{
     router.post('/:id/comentar',authCookiesRoleUser,async(req,res)=>{
         const {id:MovieId} = req.params
         const {Comentario}=req.body
-        
-        const data = {Comentario,MovieId}
-        console.log(data)
+        console.log(MovieId)
+        const data = {Comentario:Comentario.Comentario,Raiting:Comentario.Raiting,MovieId}
         const mesage = await comentarios.Comentar(data,req.cookies)
         if(!mesage) return res.status(400).json({message:"La Entrada no existe"})
        

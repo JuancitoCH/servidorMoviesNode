@@ -16,7 +16,8 @@ coneccionDb()
 //middelware
 app.use(express.json())
 app.use(cors({
-    origin:'*'
+    origin:['http://127.0.0.1:5500','http://localhost:3000'],
+    credentials:true
 }))
 app.use(cookies())
 
