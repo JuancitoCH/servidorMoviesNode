@@ -1,18 +1,23 @@
 //imports
 const express = require('express')
-const { connection:coneccionDb } = require('./config/dbConection')
 const moviesRoutes = require('./routes/moviesRoutesManager')
-const enVar = require('./config/envVars')
 const userRoute = require('./routes/userRoute')
-const cors = require('cors')
+const enVar = require('./config/envVars')
 const cookies = require('cookie-parser')
+const cors = require('cors')
 //definition of app for express
-coneccionDb()
 const app = express()
+
+//coneccionDataBase
+const { connection:coneccionDb } = require('./config/dbConection')
+coneccionDb()
+
+
 //middelware
 app.use(express.json())
 app.use(cors({
-    origin:'*'
+    origin:['http://127.0.0.1:5500','http://localhost:3000'],
+    credentials:true
 }))
 app.use(cookies())
 
@@ -21,7 +26,7 @@ moviesRoutes(app)
 userRoute(app)
 
 app.get('/',(req,res)=>{
-return res.send('IndexApi')
+    return res.send('IndexApi')
 })
 
 

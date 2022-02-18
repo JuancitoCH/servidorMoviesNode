@@ -1,5 +1,5 @@
 const express = require('express')
-const UserService = require('../services/UserService')
+const UserService = require('../services/userService')
 const {authCookiesRoleAdmin} = require('../middleware/loginCredentials')
 // const cookie = require('cookie-parser')
 
@@ -8,10 +8,12 @@ const userRoute=(app)=>{
     const userService = new UserService()
     app.use('/user',router)
 
+    router.get('/',(req,res)=>{
+        
+        return res.status(200).send("Usuarios")
+    })
+
     router.get('/all',authCookiesRoleAdmin,async(req,res)=>{
-        // console.log(req.header("Authorization"))
-        // console.log(req.originalUrl+req.method)
-        // console.log(req.cookies)
         const respuestaT = await userService.getUsers()
         return res.status(200).json(respuestaT)
 
@@ -21,8 +23,8 @@ const userRoute=(app)=>{
         const usuario = await userService.registerUser(data)
         return res.status(200).cookie("token",usuario.token,{
             httpOnly:true,
-            // secure:true,
-            // sameSite:"none"
+            secure:true,
+            sameSite:"none"
         }).json(usuario)
     })
     router.post('/login',async(req,res)=>{
@@ -30,8 +32,8 @@ const userRoute=(app)=>{
         const respuesta = await userService.loginUser(data)
         return res.status(200).cookie("token",respuesta.token,{
             httpOnly:true,
-            // secure:true,
-            // sameSite:"none"
+            secure:true,
+            sameSite:"none"
         }).json(respuesta)
     })
 

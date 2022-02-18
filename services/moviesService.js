@@ -17,8 +17,7 @@ class Movie {
         if(!reject){
             const validacion = this.verificacionM.verificacionDatosReq(movieData)
             if(validacion){
-                const movieCreated = await MoviesModel.create(movieData)
-                await this.ComentarioS.AgregarComentario(movieCreated.id)
+                await MoviesModel.create(movieData)
                 return{message:'Succesfully created'}
             }
             else return {message:"Los Datos Proporcionados no son Suficiente Title,Realease,Sinopsis,Poster:url,Banner:url,Raiting,Genere,Cast,Trailer:urlYoutube"}
@@ -37,7 +36,12 @@ class Movie {
         }
     }
     async getOneId(MovieId){
-        return await MoviesModel.findById(MovieId)
+        try{
+            return await MoviesModel.findById(MovieId)
+        }
+        catch(e){
+            return {message:"NotFound"}
+        }
     }
 }
 module.exports = Movie
