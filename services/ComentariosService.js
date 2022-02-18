@@ -27,7 +27,18 @@ class ComentariosService{
             if(!movieExistance) return {message:"La Movie No existe"}
             
             await ComentariosModel.create({Email,Comentario,Raiting,MovieId})
+
+
             const Comentarios = await ComentariosModel.find({MovieId})
+            const cantidadComentarios = Comentarios.length
+            let puntajeGComentarios = 0
+            Comentarios.map(comentario=>{
+                puntajeGComentarios += comentario.Raiting
+            })
+            puntajeGComentarios=puntajeGComentarios/cantidadComentarios
+            await MoviesModel.findByIdAndUpdate(MovieId,{Raiting:puntajeGComentarios})
+
+
 
             return  Comentarios
         }
