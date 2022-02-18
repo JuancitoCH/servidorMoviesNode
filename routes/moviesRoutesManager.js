@@ -9,13 +9,14 @@ const moviesRoutes=(app)=>{
     const comentarios = new Comentar()
     //uzo de la ruta por parte de app
     app.use('/movies',router)
-    // router.get('/',(req,res)=>{
-            
-    //         return res.status(200).json({moviesList:"aaaaa"})
-    //     })
-
+  
     router.get('/',async(req,res)=>{
         const moviesList = await movies.getAllMovies()
+        return res.status(200).json(moviesList)
+    })
+    router.get('/genere/:genere',async(req,res)=>{
+        const {genere} = req.params
+        const moviesList = await movies.getMoviesGenero(genere)
         return res.status(200).json(moviesList)
     })
     router.get('/:id',async(req,res)=>{
